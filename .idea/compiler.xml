@@ -6,16 +6,32 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="MNoute-config-center" />
+        <module name="user" />
+        <module name="common" />
+        <module name="sdk" />
+        <module name="service" />
+        <module name="config" />
+        <module name="admin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="MNoute-config-center" target="11" />
+      <module name="admin" target="11" />
+      <module name="common" target="11" />
+      <module name="config" target="11" />
+      <module name="mnount-config-center" target="11" />
+      <module name="sdk" target="11" />
+      <module name="service" target="11" />
+      <module name="user" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="MNoute-config-center" options="-parameters" />
+      <module name="admin" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="config" options="-parameters" />
+      <module name="sdk" options="-parameters" />
+      <module name="service" options="-parameters" />
+      <module name="user" options="-parameters" />
     </option>
   </component>
 </project>
