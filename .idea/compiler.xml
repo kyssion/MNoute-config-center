@@ -9,6 +9,7 @@
         <module name="user" />
         <module name="common" />
         <module name="sdk" />
+        <module name="core" />
         <module name="service" />
         <module name="config" />
         <module name="admin" />
@@ -18,6 +19,7 @@
       <module name="admin" target="11" />
       <module name="common" target="11" />
       <module name="config" target="11" />
+      <module name="core" target="11" />
       <module name="mnount-config-center" target="11" />
       <module name="sdk" target="11" />
       <module name="service" target="11" />
@@ -29,6 +31,7 @@
       <module name="admin" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="config" options="-parameters" />
+      <module name="core" options="-parameters" />
       <module name="sdk" options="-parameters" />
       <module name="service" options="-parameters" />
       <module name="user" options="-parameters" />

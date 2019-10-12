@@ -9,18 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>admin</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.kyssion.mnount-config-center</groupId>
-            <artifactId>core</artifactId>
-            <version>${config.center.version}</version>
-        </dependency>
-    </dependencies>
+    <artifactId>core</artifactId>
+    <version>${config.center.version}</version>
 
 </project>
