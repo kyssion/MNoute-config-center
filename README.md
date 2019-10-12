@@ -13,6 +13,12 @@
 功能详细划分
  
 1. 用户权限管理功能
+/user/create?name=xxxx&email&passwod
+/user/update/permissions?user_id&cluter&namespace&key
+/user/create/permissions?user_id&cluter&namespace&key
+/user/delete/permissions?user_id&cluter&namespace&key
+
+
     权限分配- 是否能够修改一个配置的信息
               是否能够查看一个配置的信息
               是否能够删除一个配置的信息
@@ -22,6 +28,7 @@
               是否能对一个集群下的所有配置进行那些操作
               
 2. 配置功能
+/config/create/namespace&cluter&key
     (1) 新建配置
     (2) 删除配置
     (3) 增加配置
