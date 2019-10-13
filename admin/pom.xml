@@ -21,6 +21,11 @@
             <artifactId>core</artifactId>
             <version>${config.center.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.kyssion.mnount-config-center</groupId>
+            <artifactId>user</artifactId>
+            <version>${config.center.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

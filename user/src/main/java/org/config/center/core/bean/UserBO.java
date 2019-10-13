@@ -1,4 +1,4 @@
-package org.config.center.bean;
+package org.config.center.core.bean;
 
 public class UserBO {
     private String name;

@@ -1,6 +1,6 @@
 package org.config.center.controll;
 
-import org.config.center.bean.Response;
+import org.config.center.core.bean.Response;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
