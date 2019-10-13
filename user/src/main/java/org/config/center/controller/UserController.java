@@ -1,32 +1,39 @@
 package org.config.center.controller;
 
 import org.config.center.bean.UserBO;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
 
 
-    public UserBO Login(){
-        return null;
 
+    @RequestMapping("user/login")
+    public UserBO Login(String name ,String password) {
+
+        return null;
     }
 
-    public boolean LgOut(){
+    @RequestMapping("user/lgout")
+    public boolean LgOut() {
         return true;
 
     }
 
-    public boolean register(){
+    @RequestMapping("user/register")
+    public boolean register() {
         return true;
 
     }
 
-    public UserBO addPermission(){
+    @RequestMapping("user/add/permission")
+    public UserBO addPermission() {
         return null;
     }
 
-    public UserBO modifyPermission(){
+    @RequestMapping("user/modify/permission")
+    public UserBO modifyPermission() {
         return null;
 
     }
