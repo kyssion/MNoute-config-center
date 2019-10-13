@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -68,5 +68,12 @@ public class UserController {
     public Response<Boolean> deletePermission(String name,String namsespace,String cluter,String key) {
         userService.deletePermission(name,namsespace,cluter,key);
         return Response.getResponse(200,"ok",true);
+    }
+
+
+    @RequestMapping("findAll")
+    public Response<List<UserBO>> findAllUser(){
+        List<UserBO> list = userService.findAllUserList();
+        return Response.getResponse(200,"ok",list);
     }
 }

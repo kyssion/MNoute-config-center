@@ -3,7 +3,7 @@ package org.config.center.core.bean;
 public class Response<T> {
     private T bean;
     private ResponseStatus status;
-
+    private Page page;
     public Object getBean() {
         return bean;
     }
@@ -27,6 +27,14 @@ public class Response<T> {
         responseStatus.setDesc(desc);
         response.setBean(bean);
         response.setStatus(responseStatus);
+        return response;
+    }
+
+    public static <T> Response<T> getResponsewithPage(int code,String desc,T bean,int page,int totalPage){
+        Response<T> response = getResponse(code,desc,bean);
+        Page page1 = new Page();
+        page1.setTotalPage(totalPage);
+        page1.setPageSize(page);
         return response;
     }
 

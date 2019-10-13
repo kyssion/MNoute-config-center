@@ -5,6 +5,8 @@ import org.config.center.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -39,5 +41,9 @@ public class UserService {
         }else if (namsespace!=null){
             userMapper.deletePermission(name,"namsespace",namsespace);
         }
+    }
+
+    public List<UserBO> findAllUserList() {
+        return userMapper.findAllUser();
     }
 }
