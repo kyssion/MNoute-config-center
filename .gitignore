@@ -28,6 +28,7 @@ out/
 build/
 project/
 
+*.iml
 */*.iml
 /target/
 */target/*
