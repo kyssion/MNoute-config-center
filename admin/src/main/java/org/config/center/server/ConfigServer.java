@@ -20,10 +20,12 @@ public class ConfigServer {
         if(keyName==null){
             keyName = "";
         }
+        keyName="%"+keyName+"%";
         return configMapper.findConfigListSize(keyName);
     }
 
     public List<ConfigBean> findConfigList(String keyName, int page, int pageSize) {
+        keyName="%"+keyName+"%";
         return configMapper.findConfigList(keyName,page*pageSize,pageSize);
     }
 
@@ -35,8 +37,8 @@ public class ConfigServer {
         configMapper.delete(name);
     }
 
-    public void updateConfig(ConfigBean configBean) {
-        configMapper.updateConfig(configBean);
+    public void updateConfig(String name,String value) {
+        configMapper.updateConfig(name,value);
     }
 
     public List<ConfigBean> findAllConfigList() {

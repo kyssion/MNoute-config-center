@@ -10,24 +10,23 @@ import java.util.List;
 @Mapper
 public interface ConfigMapper {
 
-    @Insert("insert into config (namespace,cluter,key,value,namespace_token,cluter_token,key_token,status)" +
-            " values (#{namespace},#{cluter},#{key},#{value},#{namespace_token},#{cluter_token},#{key_token},#{status}))")
+    @Insert("insert into config (namespace,cluter,`key`,value,status) values (#{namespace},#{cluter},#{key},#{value},#{status})")
     void insertConfig(ConfigBean configBean);
 
-    @Select("select count(0) from config where key in (#{key} )")
+    @Select("select count(0) from config where `key` like #{key}")
     int findConfigListSize(@Param("key") String keyName);
 
-    @Select("select * from config where key ='%#{key}%' limit #{limit},#[size]")
+    @Select("select * from config where `key` like #{key} limit #{limit},#{size}")
     List<ConfigBean> findConfigList(@Param("key")String keyName,@Param("limit")int limit,@Param("size")int size);
 
-    @Select("update config set status = #{s} where keyName = #{key}")
+    @Select("update config set status = #{s} where `key` = #{key}")
     void updateConfigStatus(@Param("key") String keyName, @Param("s") String s);
 
-    @Delete("delete from confign where key = #{key}")
+    @Delete("delete from config where `key` = #{key}")
     void delete(@Param("key") String name);
 
-    @Update("update config set value = #{value} where key = #{key}")
-    void updateConfig(ConfigBean configBean);
+    @Update("update config set value = #{value} where `key` = #{key}")
+    void updateConfig(@Param("key") String key,@Param("value") String value);
 
     @Select("select * from config")
     List<ConfigBean> findAllConfigList();

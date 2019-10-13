@@ -1,24 +1,25 @@
 package org.config.center.core.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel("配置信息接收javabean")
 public class ConfigBean {
     private long id;
+
+    @ApiModelProperty("命名空间")
     private String namespace;
+    @ApiModelProperty("集群信息")
     private String cluter;
+
+    @ApiModelProperty("配置key信息")
     private String key;
-    private String values;
-    private String namespaceToken;
-    private String cluterToken;
-    private String keyToken;
+
+    @ApiModelProperty("配置值信息")
+    private String value;
+
+    @ApiModelProperty("配置状态")
     private String status;
-
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public long getId() {
         return id;
@@ -52,35 +53,19 @@ public class ConfigBean {
         this.key = key;
     }
 
-    public String getValues() {
-        return values;
+    public String getValue() {
+        return value;
     }
 
-    public void setValues(String values) {
-        this.values = values;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public String getNamespaceToken() {
-        return namespaceToken;
+    public String getStatus() {
+        return status;
     }
 
-    public void setNamespaceToken(String namespaceToken) {
-        this.namespaceToken = namespaceToken;
-    }
-
-    public String getCluterToken() {
-        return cluterToken;
-    }
-
-    public void setCluterToken(String cluterToken) {
-        this.cluterToken = cluterToken;
-    }
-
-    public String getKeyToken() {
-        return keyToken;
-    }
-
-    public void setKeyToken(String keyToken) {
-        this.keyToken = keyToken;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
