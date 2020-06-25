@@ -1,9 +1,9 @@
 package org.mouter.admin.data;
 
 public class ApplicationInformationData extends BaseData{
-    private Long groupId;
-    private Long appId;
-    private Long appName;
+    public Long groupId;
+    public Long appId;
+    public String appName;
 
     public Long getGroupId() {
         return groupId;
@@ -21,11 +21,11 @@ public class ApplicationInformationData extends BaseData{
         this.appId = appId;
     }
 
-    public Long getAppName() {
+    public String getAppName() {
         return appName;
     }
 
-    public void setAppName(Long appName) {
+    public void setAppName(String appName) {
         this.appName = appName;
     }
 }

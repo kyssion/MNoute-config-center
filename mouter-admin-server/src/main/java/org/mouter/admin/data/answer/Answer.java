@@ -2,9 +2,9 @@ package org.mouter.admin.data.answer;
 
 
 public class Answer {
-    private int code;
-    private String message;
-    private Object body;
+    public int code;
+    public String message;
+    public Object body;
 
     public int getCode() {
         return code;

@@ -32,7 +32,7 @@ public class BaseData {
     }
 
     public String getCreateUser() {
-        return createUser;
+        return createUser==null?"":createUser;
     }
 
     public void setCreateUser(String createUser) {
@@ -40,7 +40,7 @@ public class BaseData {
     }
 
     public String getUpdateUser() {
-        return updateUser;
+        return updateUser==null?"":updateUser;
     }
 
     public void setUpdateUser(String updateUser) {

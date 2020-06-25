@@ -3,8 +3,8 @@ package org.mouter.admin.data.answer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class ErrorAnser {
-    private int errorCode;
-    private String message;
+    public int errorCode;
+    public String message;
     public ErrorAnser(int errorCode,String message){
         this.errorCode = errorCode;
         this.message = message;

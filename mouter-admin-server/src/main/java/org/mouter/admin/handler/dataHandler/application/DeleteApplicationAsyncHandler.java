@@ -42,6 +42,8 @@ public class DeleteApplicationAsyncHandler extends AsyncSampleFnHandler {
                                 paramWrapper.setContextParam(SQL_DATA_RESULT_KEY, Boolean.TRUE);
                                 paramWrapper.setParam(Answer.createAnswer(200,"success",null));
                                 asyncScheduler.next(paramWrapper,asyncResult);
+                            }else{
+                                result.cause().printStackTrace();
                             }
                             connection.close();
                         });

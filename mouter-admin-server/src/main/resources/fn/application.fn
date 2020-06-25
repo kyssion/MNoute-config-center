@@ -1,4 +1,16 @@
 namespace(application){
+    async process(insert_application){
+            ->handle(InsertApplicationAsyncHandler)
+    }
+
+    async process(get_application){
+            ->handle(GetApplicationAsyncHandler)
+    }
+
+    async process(update_application){
+            ->handle(UpdateApplicationAsyncHandler)
+    }
+
     async process(delete_application){
             ->handle(DeleteApplicationAsyncHandler)
     }
