@@ -30,7 +30,6 @@ public class AdminServer {
         Router router = new Router(mintFlow);
        MysqlPool.mysql= MysqlPool.getPool(vertx);
         router.addRoute("/delete_application","application","delete_application",requestParam -> {
-            System.out.println("start");
             ParamWrapper paramWrapper = new ParamWrapper();
             MultiMap multiMap = requestParam.getParams();
             ApplicationInformationData applicationInformationData = new ApplicationInformationData();
@@ -45,7 +44,6 @@ public class AdminServer {
             responseParams.setData(ans);
             return responseParams;
         });
-
         server.requestHandler(router);
         server.listen(8080,  res -> {
             if (res.succeeded()) {

@@ -17,7 +17,6 @@ import org.mouter.admin.util.ObjectUtils;
 @MintFlowHandler
 public class DeleteApplicationAsyncHandler extends AsyncSampleFnHandler {
 
-
     public static String SQL_DATA_KEY = "data.delete.application";
     public static String SQL_DATA_RESULT_KEY = "data.delete.application.result";
 
@@ -30,9 +29,7 @@ public class DeleteApplicationAsyncHandler extends AsyncSampleFnHandler {
         MysqlPool.mysql.getConnection((res)->{
             if(res.succeeded()){
                 ApplicationInformationData appdata = paramWrapper.getContextParam(SQL_DATA_KEY);
-
                 //如果 appId或者 group id 没有填写直接返回报错
-
                 if(ObjectUtils.isNullOrEmpty(appdata.getAppId(),appdata.getGroupId())){
                     paramWrapper.setParam(Answer.createAnswer(200,"success",new ErrorAnser(ErrorCode.PARAMS_ERROR,"删除应用请求参数异常，需要appId和 groupId")));
                     asyncResult.doResult(paramWrapper);
@@ -43,13 +40,12 @@ public class DeleteApplicationAsyncHandler extends AsyncSampleFnHandler {
                         .execute(Tuple.of(appdata.getGroupId(),appdata.getAppId()),(result)->{
                             if(result.succeeded()){
                                 paramWrapper.setContextParam(SQL_DATA_RESULT_KEY, Boolean.TRUE);
-                                paramWrapper.setParam(Answer.createAnswer(200,"success",new ErrorAnser(ErrorCode.PARAMS_ERROR,"删除应用请求参数异常，需要appId和 groupId")));
+                                paramWrapper.setParam(Answer.createAnswer(200,"success",null));
                                 asyncScheduler.next(paramWrapper,asyncResult);
                             }
                             connection.close();
                         });
             }
         });
-        System.out.println("gogogogo");
     }
 }
