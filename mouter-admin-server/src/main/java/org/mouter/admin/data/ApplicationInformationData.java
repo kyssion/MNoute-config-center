@@ -1,9 +1,9 @@
 package org.mouter.admin.data;
 
 public class ApplicationInformationData extends BaseData{
-    public Long groupId;
-    public Long appId;
-    public String appName;
+    private Long groupId;
+    private Long appId;
+    private String appName;
 
     public Long getGroupId() {
         return groupId;

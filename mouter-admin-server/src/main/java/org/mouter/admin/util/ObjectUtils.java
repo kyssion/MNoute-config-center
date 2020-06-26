@@ -2,6 +2,7 @@ package org.mouter.admin.util;
 
 import io.vertx.sqlclient.Row;
 import org.mintflow.param.ParamWrapper;
+import org.mirror.reflection.mirror.MirrorObject;
 import org.mouter.admin.data.ApplicationInformationData;
 
 import java.lang.reflect.Field;
@@ -17,34 +18,32 @@ public class ObjectUtils {
     }
 
     public static <T> T mergeRow(Row row,T t) throws IllegalAccessException {
-        Class tClass = t.getClass();
-        Field[] fields = tClass.getDeclaredFields();
-        for(Field field:fields){
-            Class<?> type = field.getType();
-            String name = StringUtils.humpToLine2(field.getName());
-            if(type==Integer.class){
-                Integer data = row.getInteger(name);
-                field.set(t,data);
-            }else if(type == Long.class){
-                Long data = row.getLong(name);
-                field.set(t,data);
-            }else if(type==String.class){
-                String data = row.getString(name);
-                field.set(t,data);
+        MirrorObject mirrorObject = MirrorObject.forObject(t);
+        String[] setterNames= mirrorObject.getSetterNames();
+        for(String s:setterNames){
+            Class<?> type = mirrorObject.getSetterType(s);
+            String name =StringUtils.humpToLine2(s);
+            if(type == String.class){
+                mirrorObject.setValue(s,row.getString(name));
+            }else if(type==Integer.class){
+                mirrorObject.setValue(s,row.getInteger(name));
+            }else if (type==Long.class){
+                mirrorObject.setValue(s,row.getLong(name));
             }
         }
         return t;
     }
 
-    public static <T> T mergeObject(T appDataUpdate, T appData) throws IllegalAccessException {
-        Class tClass = appDataUpdate.getClass();
-        Field[] fields = tClass.getDeclaredFields();
-        for(Field field:fields){
-            Object now = field.get(appData);
+    public static <T> T mergeObject(T to, T from) throws IllegalAccessException {
+        MirrorObject toObject = MirrorObject.forObject(to);
+        MirrorObject fromObject = MirrorObject.forObject(from);
+        String[] setNames = toObject.getSetterNames();
+        for(String setName : setNames){
+            Object now = fromObject.getValue(setName);
             if(now!=null){
-                field.set(appDataUpdate,field.get(appData));
+                toObject.setValue(setName,now);
             }
         }
-        return appDataUpdate;
+        return (T) toObject.getOriginalObject();
     }
 }

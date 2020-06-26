@@ -2,8 +2,8 @@ package org.mouter.admin.data.answer;
 
 
 public class Answer {
-    public int code;
-    public String message;
+    private int code;
+    private String message;
     public Object body;
 
     public int getCode() {
