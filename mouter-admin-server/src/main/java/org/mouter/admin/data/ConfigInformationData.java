@@ -8,6 +8,15 @@ public class ConfigInformationData extends PageBaseData {
     private Long groupId;
     private Long appId;
     private Long configTemplateId;
+    private String configData;
+
+    public String getConfigData() {
+        return configData;
+    }
+
+    public void setConfigData(String configData) {
+        this.configData = configData;
+    }
 
     public Long getConfigId() {
         return configId;

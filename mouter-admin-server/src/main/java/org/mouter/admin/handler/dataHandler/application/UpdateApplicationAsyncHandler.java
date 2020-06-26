@@ -63,11 +63,11 @@ public class UpdateApplicationAsyncHandler extends AsyncSampleFnHandler {
                                                         asyncResult.doResult(paramWrapper);
                                                         return;
                                                     }
+                                                    connection.close();
                                                 });
                                             }else{
                                                 r.cause().printStackTrace();
                                             }
-                                            connection.close();
                                         });
                             }
                         });

@@ -49,8 +49,8 @@ public class UpdateConfigInformationAsyncHandler extends AsyncSampleFnHandler {
                                     configInformationData = ObjectUtils.getDataFrom(result.result(),ConfigInformationData.class);
                                     ConfigInformationData appDataUpdate = configInformationData.get(0);
                                     ObjectUtils.mergeObject(appDataUpdate, appData);
-                                    connection.preparedQuery("update config_information set config_name = ? where group_id=? and app_id=? and config_id = ?")
-                                            .execute(Tuple.of(appDataUpdate.getConfigName(),System.currentTimeMillis(),appDataUpdate.getUpdateUser(),appDataUpdate.getGroupId(),appDataUpdate.getAppId()),r->{
+                                    connection.preparedQuery("update config_information set config_name = ?,config_data=?,update_time=?,update_user=?  where group_id=? and app_id=? and config_id = ?")
+                                            .execute(Tuple.of(appDataUpdate.getConfigName(),appDataUpdate.getConfigData(),System.currentTimeMillis(),appDataUpdate.getUpdateUser(),appDataUpdate.getGroupId(),appDataUpdate.getAppId(),appDataUpdate.getConfigId()),r->{
                                                 if(r.succeeded()){
                                                     tx.commit((vo)->{
                                                         if(vo.succeeded()) {
@@ -63,11 +63,11 @@ public class UpdateConfigInformationAsyncHandler extends AsyncSampleFnHandler {
                                                             asyncResult.doResult(paramWrapper);
                                                             return;
                                                         }
+                                                        connection.close();
                                                     });
                                                 }else{
                                                     r.cause().printStackTrace();
                                                 }
-                                                connection.close();
                                             });
                                 }
                             });

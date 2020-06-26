@@ -3,6 +3,7 @@ package org.mouter.admin.handler.dataHandler.configTemplate;
 import io.vertx.sqlclient.SqlConnection;
 import io.vertx.sqlclient.Transaction;
 import io.vertx.sqlclient.Tuple;
+import org.mintflow.annotation.MintFlowHandler;
 import org.mintflow.async.result.AsyncResult;
 import org.mintflow.handler.async.AsyncSampleFnHandler;
 import org.mintflow.param.ParamWrapper;
@@ -16,7 +17,7 @@ import org.mouter.admin.dataBase.MysqlPool;
 import org.mouter.admin.util.ObjectUtils;
 
 import java.util.List;
-
+@MintFlowHandler
 public class UpdateConfigTemplateAsyncHandler extends AsyncSampleFnHandler {
 
     public static String SQL_DATA_KEY = "data.update.config";
@@ -47,8 +48,8 @@ public class UpdateConfigTemplateAsyncHandler extends AsyncSampleFnHandler {
                                 configInformationData = ObjectUtils.getDataFrom(result.result(),ConfigTemplateData.class);
                                 ConfigTemplateData appDataUpdate = configInformationData.get(0);
                                 ObjectUtils.mergeObject(appDataUpdate, appData);
-                                connection.preparedQuery("update config_template set template_name = ? where group_id=? and app_id=? and template_id = ?")
-                                        .execute(Tuple.of(appDataUpdate.getTemplateId(),System.currentTimeMillis(),appDataUpdate.getUpdateUser(),appDataUpdate.getGroupId(),appDataUpdate.getAppId()),r->{
+                                connection.preparedQuery("update config_template set template_name = ?,update_time=?,update_user=?  where group_id=? and app_id=? and template_id = ?")
+                                        .execute(Tuple.of(appDataUpdate.getTemplateName(),System.currentTimeMillis(),appDataUpdate.getUpdateUser(),appDataUpdate.getGroupId(),appDataUpdate.getAppId(),appDataUpdate.getTemplateId()),r->{
                                             if(r.succeeded()){
                                                 tx.commit((vo)->{
                                                     if(vo.succeeded()) {
@@ -61,11 +62,12 @@ public class UpdateConfigTemplateAsyncHandler extends AsyncSampleFnHandler {
                                                         asyncResult.doResult(paramWrapper);
                                                         return;
                                                     }
+                                                    connection.close();
                                                 });
                                             }else{
                                                 r.cause().printStackTrace();
+                                                connection.close();
                                             }
-                                            connection.close();
                                         });
                             }
                         });

@@ -4,6 +4,7 @@ import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowSet;
 import io.vertx.sqlclient.SqlConnection;
 import io.vertx.sqlclient.Tuple;
+import org.mintflow.annotation.MintFlowHandler;
 import org.mintflow.async.result.AsyncResult;
 import org.mintflow.handler.async.AsyncSampleFnHandler;
 import org.mintflow.param.ParamWrapper;
@@ -18,7 +19,7 @@ import org.mouter.admin.dataBase.MysqlPool;
 import org.mouter.admin.util.ObjectUtils;
 
 import java.util.List;
-
+@MintFlowHandler
 public class GetConfigTemplateAsyncHandler extends AsyncSampleFnHandler {
 
 
@@ -34,7 +35,7 @@ public class GetConfigTemplateAsyncHandler extends AsyncSampleFnHandler {
     public void asyncHandle(ParamWrapper paramWrapper, AsyncResult asyncResult, AsyncScheduler asyncScheduler) {
         MysqlPool.mysql.getConnection((res)->{
             if(res.succeeded()){
-                ConfigInformationData appdata = paramWrapper.getContextParam(SQL_DATA_KEY);
+                ConfigTemplateData appdata = paramWrapper.getContextParam(SQL_DATA_KEY);
                 //如果 appId或者 group id 没有填写直接返回报错
                 if(ObjectUtils.isNullOrEmpty(appdata.getGroupId(),appdata.getAppId())){
                     paramWrapper.setParam(PageAnswer.createPageAnswer(200,"success",new ErrorAnser(ErrorCode.PARAMS_ERROR,"搜索配置请求参数异常，必须要有groupId 和 appId"),null));
@@ -68,10 +69,10 @@ public class GetConfigTemplateAsyncHandler extends AsyncSampleFnHandler {
                             });
                 }else{
                     connection.preparedQuery("select * from config_template where group_id=? and app_id = ? and template_id=? limit ?,?")
-                            .execute(Tuple.of(appdata.getGroupId(),appdata.getAppId(),appdata.getConfigId(),appdata.getPage().getPage(),appdata.getPage().getSize()),(result)->{
+                            .execute(Tuple.of(appdata.getGroupId(),appdata.getAppId(),appdata.getTemplateId(),appdata.getPage().getPage(),appdata.getPage().getSize()),(result)->{
                                 if(result.succeeded()){
                                     connection.preparedQuery("select count(id) as num from config_template where group_id=? and app_id = ? and template_id=? limit ?,?").execute(
-                                            Tuple.of(appdata.getGroupId(),appdata.getAppId(),appdata.getConfigId(),appdata.getPage().getPage(),appdata.getPage().getSize()),r->{
+                                            Tuple.of(appdata.getGroupId(),appdata.getAppId(),appdata.getTemplateId(),appdata.getPage().getPage(),appdata.getPage().getSize()),r->{
                                                 if(r.succeeded()){
                                                     List<ConfigTemplateData> applicationInformationData = ObjectUtils.getDataFrom(result.result(),ConfigTemplateData.class);
                                                     RowSet<Row> rows = r.result();

@@ -39,7 +39,7 @@ public class InsertConfigInformationAsyncHandler extends AsyncSampleFnHandler {
                 }
                 SqlConnection connection = res.result();
                 connection.preparedQuery("insert into config_information (group_id, app_id, config_id, config_name, config_template_id, config_data, create_time, update_time, create_user, update_user) VALUE (?,?,?,?,?,?,?,?,?,?)")
-                        .execute(Tuple.of(appData.getGroupId(),appData.getAppId(),appData.getConfigId(),appData.getConfigName(),appData.getConfigTemplateId(),System.currentTimeMillis(),System.currentTimeMillis(),appData.getCreateUser(),appData.getUpdateUser()),(result)->{
+                        .execute(Tuple.of(appData.getGroupId(),appData.getAppId(),appData.getConfigId(),appData.getConfigName(),appData.getConfigTemplateId(),appData.getConfigData(),System.currentTimeMillis(),System.currentTimeMillis(),appData.getCreateUser(),appData.getUpdateUser()),(result)->{
                             if(result.succeeded()){
                                 paramWrapper.setContextParam(SQL_DATA_RESULT_KEY, Boolean.TRUE);
                                 paramWrapper.setParam(Answer.createAnswer(200,"success",null));

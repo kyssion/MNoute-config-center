@@ -2,6 +2,7 @@ package org.mouter.admin.handler.dataHandler.configTemplate;
 
 import io.vertx.sqlclient.SqlConnection;
 import io.vertx.sqlclient.Tuple;
+import org.mintflow.annotation.MintFlowHandler;
 import org.mintflow.async.result.AsyncResult;
 import org.mintflow.handler.async.AsyncSampleFnHandler;
 import org.mintflow.param.ParamWrapper;
@@ -13,10 +14,11 @@ import org.mouter.admin.data.answer.ErrorAnser;
 import org.mouter.admin.dataBase.MysqlPool;
 import org.mouter.admin.util.ObjectUtils;
 
+@MintFlowHandler
 public class InsertConfigTemplateAsyncHandler extends AsyncSampleFnHandler {
 
-    public static String SQL_DATA_KEY = "data.insert.config";
-    public static String SQL_DATA_RESULT_KEY = "data.insert.application.config";
+    public static String SQL_DATA_KEY = "data.insert.configTemplate";
+    public static String SQL_DATA_RESULT_KEY = "data.insert.application.configTemplate";
 
     public InsertConfigTemplateAsyncHandler(String name) {
         super(name);

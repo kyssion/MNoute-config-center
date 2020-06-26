@@ -8,6 +8,8 @@ import org.mintflow.handler.util.MintFlowHandlerMapperFinder;
 import org.mintflow.vertx.route.Router;
 import org.mouter.admin.dataBase.MysqlPool;
 import org.mouter.admin.router.ApplicationRouterAdder;
+import org.mouter.admin.router.ConfigRouterAdder;
+import org.mouter.admin.router.ConfigTemplateAdder;
 
 public class AdminServer {
     public static void main(String[] args) {
@@ -20,6 +22,8 @@ public class AdminServer {
         MintFlow mintFlow = MintFlow.newBuilder(mapper).addFnMapper("./fn/application.fn").build();
         Router router = new Router(mintFlow);
         new ApplicationRouterAdder().add(router);
+        new ConfigRouterAdder().add(router);
+        new ConfigTemplateAdder().add(router);
         MysqlPool.mysql= MysqlPool.getPool(vertx);
         server.requestHandler(router);
         server.listen(8080,  res -> {

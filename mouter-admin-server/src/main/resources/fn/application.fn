@@ -2,16 +2,41 @@ namespace(application){
     async process(insert_application){
             ->handle(InsertApplicationAsyncHandler)
     }
-
     async process(get_application){
-            ->handle(GetApplicationAsyncHandler)
+            ->handle(GetConfigInformationAsyncHandler)
     }
-
     async process(update_application){
             ->handle(UpdateApplicationAsyncHandler)
     }
-
     async process(delete_application){
             ->handle(DeleteApplicationAsyncHandler)
+    }
+
+
+    async process(insert_config){
+            ->handle(InsertConfigInformationAsyncHandler)
+    }
+    async process(get_config){
+            ->handle(GetConfigInformationAsyncHandler)
+    }
+   async process(update_config){
+            ->handle(UpdateConfigInformationAsyncHandler)
+    }
+   async process(delete_config){
+            ->handle(DeleteConfigInformationAsyncHandler)
+    }
+
+
+    async process(insert_config_template){
+            ->handle(InsertConfigTemplateAsyncHandler)
+    }
+    async process(get_config_template){
+            ->handle(GetConfigTemplateAsyncHandler)
+    }
+   async process(update_config_template){
+            ->handle(UpdateConfigTemplateAsyncHandler)
+    }
+   async process(delete_config_template){
+            ->handle(DeleteConfigTemplateAsyncHandler)
     }
 }

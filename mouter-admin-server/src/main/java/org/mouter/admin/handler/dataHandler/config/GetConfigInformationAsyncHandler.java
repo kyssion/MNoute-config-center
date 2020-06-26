@@ -42,11 +42,11 @@ public class GetConfigInformationAsyncHandler extends AsyncSampleFnHandler {
                 }
 
                 SqlConnection connection = res.result();
-                if(ObjectUtils.isNullOrEmpty(appdata.getAppId())){
+                if(ObjectUtils.isNullOrEmpty(appdata.getConfigId())){
                     connection.preparedQuery("select * from config_information where group_id=? and app_id=? limit ?,?")
                             .execute(Tuple.of(appdata.getGroupId(),appdata.getAppId(),appdata.getPage().getPage(),appdata.getPage().getSize()),(result)->{
                                 if(result.succeeded()){
-                                    connection.preparedQuery("select count(id) as num from application_information where group_id=? and app_id=? limit ?,?")
+                                    connection.preparedQuery("select count(id) as num from config_information where group_id=? and app_id=? limit ?,?")
                                             .execute(Tuple.of(appdata.getGroupId(),appdata.getAppId(),appdata.getPage().getPage(),appdata.getPage().getSize()),(r->{
                                         if(r.succeeded()){
                                             List<ConfigInformationData> applicationInformationData = ObjectUtils.getDataFrom(result.result(),ConfigInformationData.class);
@@ -66,10 +66,10 @@ public class GetConfigInformationAsyncHandler extends AsyncSampleFnHandler {
                                 }
                             });
                 }else{
-                    connection.preparedQuery("select * from application_information where group_id=? and app_id =? and config_id=? limit ?,?")
+                    connection.preparedQuery("select * from config_information where group_id=? and app_id =? and config_id=? limit ?,?")
                             .execute(Tuple.of(appdata.getGroupId(),appdata.getAppId(),appdata.getConfigId(),appdata.getPage().getPage(),appdata.getPage().getSize()),(result)->{
                                 if(result.succeeded()){
-                                    connection.preparedQuery("select count(id) as num from application_information where group_id=? and app_id=? and config_id=? limit ?,?").execute(
+                                    connection.preparedQuery("select count(id) as num from config_information where group_id=? and app_id=? and config_id=? limit ?,?").execute(
                                             Tuple.of(appdata.getGroupId(),appdata.getAppId(),appdata.getConfigId(),appdata.getPage().getPage(),appdata.getPage().getSize()),r->{
                                         if(r.succeeded()){
                                             List<ConfigInformationData> applicationInformationData = ObjectUtils.getDataFrom(result.result(),ConfigInformationData.class);
@@ -86,6 +86,8 @@ public class GetConfigInformationAsyncHandler extends AsyncSampleFnHandler {
                                         }
                                         connection.close();
                                     });
+                                }else{
+                                    result.cause().printStackTrace();
                                 }
                             });
                 }
