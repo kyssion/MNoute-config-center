@@ -3,7 +3,6 @@ package org.mouter.admin.util;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowSet;
 import org.mirror.reflection.mirror.MirrorObject;
-import org.mouter.admin.data.answer.ConfigInformationData;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

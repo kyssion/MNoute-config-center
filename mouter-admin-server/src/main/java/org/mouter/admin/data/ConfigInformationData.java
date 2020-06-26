@@ -1,4 +1,4 @@
-package org.mouter.admin.data.answer;
+package org.mouter.admin.data;
 
 import org.mouter.admin.data.PageBaseData;
 

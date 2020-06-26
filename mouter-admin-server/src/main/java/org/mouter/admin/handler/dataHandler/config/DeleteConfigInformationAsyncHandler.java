@@ -8,9 +8,8 @@ import org.mintflow.handler.async.AsyncSampleFnHandler;
 import org.mintflow.param.ParamWrapper;
 import org.mintflow.scheduler.async.AsyncScheduler;
 import org.mouter.admin.code.ErrorCode;
-import org.mouter.admin.data.ApplicationInformationData;
 import org.mouter.admin.data.answer.Answer;
-import org.mouter.admin.data.answer.ConfigInformationData;
+import org.mouter.admin.data.ConfigInformationData;
 import org.mouter.admin.data.answer.ErrorAnser;
 import org.mouter.admin.dataBase.MysqlPool;
 import org.mouter.admin.util.ObjectUtils;
@@ -31,14 +30,14 @@ public class DeleteConfigInformationAsyncHandler extends AsyncSampleFnHandler {
             if(res.succeeded()){
                 ConfigInformationData appData = paramWrapper.getContextParam(SQL_DATA_KEY);
                 //如果 appId或者 group id 没有填写直接返回报错
-                if(ObjectUtils.isNullOrEmpty(appData.getAppId(),appData.getGroupId())){
+                if(ObjectUtils.isNullOrEmpty(appData.getAppId(),appData.getGroupId(),appData.getConfigId())){
                     paramWrapper.setParam(Answer.createAnswer(200,"success",new ErrorAnser(ErrorCode.PARAMS_ERROR,"删除配置请求参数异常，需要appId和 groupId")));
                     asyncResult.doResult(paramWrapper);
                     return;
                 }
                 SqlConnection connection = res.result();
                 connection.preparedQuery("delete from config_information where group_id=? and app_id =? and app_id=?")
-                        .execute(Tuple.of(appData.getGroupId(),appData.getAppId(),appData.getAppId()),(result)->{
+                        .execute(Tuple.of(appData.getGroupId(),appData.getAppId(),appData.getConfigId()),(result)->{
                             if(result.succeeded()){
                                 paramWrapper.setContextParam(SQL_DATA_RESULT_KEY, Boolean.TRUE);
                                 paramWrapper.setParam(Answer.createAnswer(200,"success",null));
