@@ -17,7 +17,6 @@ import org.mouter.admin.util.ObjectUtils;
 
 import java.util.List;
 
-import static org.mouter.admin.handler.dataHandler.application.GetApplicationAsyncHandler.getDataFrom;
 
 @MintFlowHandler
 public class UpdateApplicationAsyncHandler extends AsyncSampleFnHandler {
@@ -47,25 +46,11 @@ public class UpdateApplicationAsyncHandler extends AsyncSampleFnHandler {
                         .execute(Tuple.of(appData.getGroupId(),appData.getAppId()),(result)->{
                             if(result.succeeded()){
                                 List<ApplicationInformationData> applicationInformationDatas = null;
-                                try {
-                                    applicationInformationDatas = getDataFrom(result.result());
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                    paramWrapper.setParam(Answer.createAnswer(200,"success",new ErrorAnser(ErrorCode.PARAMS_ERROR,"搜索应用信息，数据合并失败")));
-                                    asyncResult.doResult(paramWrapper);
-                                    return;
-                                }
+                                applicationInformationDatas = ObjectUtils.getDataFrom(result.result(),ApplicationInformationData.class);
                                 ApplicationInformationData appDataUpdate = applicationInformationDatas.get(0);
-                                try {
-                                    ObjectUtils.mergeObject(appDataUpdate, appData);
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                    paramWrapper.setParam(Answer.createAnswer(200,"success",new ErrorAnser(ErrorCode.PARAMS_ERROR,"更新应用信息，数据合并失败")));
-                                    asyncResult.doResult(paramWrapper);
-                                    return;
-                                }
+                                ObjectUtils.mergeObject(appDataUpdate, appData);
                                 connection.preparedQuery("update application_information  set app_name=?,update_item=?,update_user=? where group_id=? and app_id=?")
-                                        .execute(Tuple.of("P",System.currentTimeMillis(),appDataUpdate.getUpdateUser(),90000,90000),r->{
+                                        .execute(Tuple.of(appDataUpdate.getAppName(),System.currentTimeMillis(),appDataUpdate.getUpdateUser(),appDataUpdate.getGroupId(),appDataUpdate.getAppId()),r->{
                                             if(r.succeeded()){
                                                 tx.commit((vo)->{
                                                     if(vo.succeeded()) {

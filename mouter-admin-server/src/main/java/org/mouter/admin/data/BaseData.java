@@ -1,6 +1,6 @@
 package org.mouter.admin.data;
 
-public class BaseData {
+public class BaseData{
     private Long id;
     private Long createTime;
     private Long updateTime;

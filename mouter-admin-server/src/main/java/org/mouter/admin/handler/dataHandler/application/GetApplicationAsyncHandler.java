@@ -11,8 +11,10 @@ import org.mintflow.param.ParamWrapper;
 import org.mintflow.scheduler.async.AsyncScheduler;
 import org.mouter.admin.code.ErrorCode;
 import org.mouter.admin.data.ApplicationInformationData;
+import org.mouter.admin.data.PageAble;
 import org.mouter.admin.data.answer.Answer;
 import org.mouter.admin.data.answer.ErrorAnser;
+import org.mouter.admin.data.answer.PageAnswer;
 import org.mouter.admin.dataBase.MysqlPool;
 import org.mouter.admin.util.ObjectUtils;
 
@@ -37,7 +39,7 @@ public class GetApplicationAsyncHandler extends AsyncSampleFnHandler {
                 ApplicationInformationData appdata = paramWrapper.getContextParam(SQL_DATA_KEY);
                 //如果 appId或者 group id 没有填写直接返回报错
                 if(ObjectUtils.isNullOrEmpty(appdata.getGroupId())){
-                    paramWrapper.setParam(Answer.createAnswer(200,"success",new ErrorAnser(ErrorCode.PARAMS_ERROR,"搜索应用请求参数异常，必须要有groupId")));
+                    paramWrapper.setParam(PageAnswer.createPageAnswer(200,"success",new ErrorAnser(ErrorCode.PARAMS_ERROR,"搜索应用请求参数异常，必须要有groupId"),null));
                     asyncResult.doResult(paramWrapper);
                     return;
                 }
@@ -48,44 +50,36 @@ public class GetApplicationAsyncHandler extends AsyncSampleFnHandler {
                             .execute(Tuple.of(appdata.getGroupId()),(result)->{
                                 if(result.succeeded()){
                                     paramWrapper.setContextParam(SQL_DATA_RESULT_KEY, Boolean.TRUE);
-                                    paramWrapper.setParam(Answer.createAnswer(200,"success",null));
+                                    paramWrapper.setParam(PageAnswer.createPageAnswer(200,"success",null,null));
                                     asyncScheduler.next(paramWrapper,asyncResult);
                                 }
                                 connection.close();
                             });
                 }else{
-                    connection.preparedQuery("select * from application_information where group_id=? and app_id =?")
-                            .execute(Tuple.of(appdata.getGroupId(),appdata.getAppId()),(result)->{
+                    connection.preparedQuery("select * from application_information where group_id=? and app_id =? limit ?,?")
+                            .execute(Tuple.of(appdata.getGroupId(),appdata.getAppId(),appdata.getPage().getPage(),appdata.getPage().getSize()),(result)->{
                                 if(result.succeeded()){
-                                    List<ApplicationInformationData> applicationInformationData = null;
-                                    try {
-                                        applicationInformationData =
-                                                getDataFrom(result.result());
-                                    } catch (IllegalAccessException e) {
-                                        e.printStackTrace();
-                                        paramWrapper.setParam(Answer.createAnswer(200,"success",new ErrorAnser(ErrorCode.PARAMS_ERROR,"搜索应用信息，数据合并失败")));
-                                        asyncResult.doResult(paramWrapper);
-                                        return;
-                                    }
-                                    paramWrapper.setContextParam(SQL_DATA_RESULT_KEY, applicationInformationData);
-                                    paramWrapper.setParam(Answer.createAnswer(200,"success",applicationInformationData));
-                                    asyncScheduler.next(paramWrapper,asyncResult);
+                                    connection.query("select count(id) as num from application_information").execute(r->{
+                                        if(r.succeeded()){
+                                            List<ApplicationInformationData> applicationInformationData = ObjectUtils.getDataFrom(result.result(),ApplicationInformationData.class);
+                                            RowSet<Row> rows = r.result();
+                                            Integer integer = rows.iterator().next().getInteger("num");
+                                            PageAble pageAble = new PageAble();
+                                            pageAble.setPage(appdata.getPage().getPage());
+                                            pageAble.setSize(appdata.getPage().getSize());
+                                            pageAble.setAll((int) Math.ceil((double)integer/appdata.getPage().getSize()));
+                                            PageAnswer pageAnswer =PageAnswer.createPageAnswer(200,"succuess",applicationInformationData,pageAble);
+                                            paramWrapper.setContextParam(SQL_DATA_RESULT_KEY, pageAnswer);
+                                            paramWrapper.setParam(pageAnswer);
+                                            asyncScheduler.next(paramWrapper,asyncResult);
+                                        }
+                                        connection.close();
+                                    });
                                 }
-                                connection.close();
                             });
                 }
 
             }
         });
-    }
-
-    public static List<ApplicationInformationData> getDataFrom(RowSet<Row> rowSet) throws IllegalAccessException {
-        List<ApplicationInformationData> appList =
-                new ArrayList<>();
-        for(Row row:rowSet){
-            ApplicationInformationData appData = ObjectUtils.mergeRow(row,new ApplicationInformationData());
-            appList.add(appData);
-        }
-        return appList;
     }
 }

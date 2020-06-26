@@ -1,11 +1,13 @@
 package org.mouter.admin.util;
 
 import io.vertx.sqlclient.Row;
-import org.mintflow.param.ParamWrapper;
+import io.vertx.sqlclient.RowSet;
 import org.mirror.reflection.mirror.MirrorObject;
-import org.mouter.admin.data.ApplicationInformationData;
+import org.mouter.admin.data.answer.ConfigInformationData;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObjectUtils {
     public static boolean isNullOrEmpty(Object...objects){
@@ -17,7 +19,7 @@ public class ObjectUtils {
         return false;
     }
 
-    public static <T> T mergeRow(Row row,T t) throws IllegalAccessException {
+    public static <T> T mergeRow(Row row,T t) {
         MirrorObject mirrorObject = MirrorObject.forObject(t);
         String[] setterNames= mirrorObject.getSetterNames();
         for(String s:setterNames){
@@ -34,7 +36,7 @@ public class ObjectUtils {
         return t;
     }
 
-    public static <T> T mergeObject(T to, T from) throws IllegalAccessException {
+    public static <T> T mergeObject(T to, T from) {
         MirrorObject toObject = MirrorObject.forObject(to);
         MirrorObject fromObject = MirrorObject.forObject(from);
         String[] setNames = toObject.getSetterNames();
@@ -45,5 +47,26 @@ public class ObjectUtils {
             }
         }
         return (T) toObject.getOriginalObject();
+    }
+
+    public static <T> List<T> getDataFrom(RowSet<Row> result,Class<T> t) {
+        List<T> appList =
+                new ArrayList<>();
+        for(Row row:result){
+            T appData = null;
+            try {
+                appData = ObjectUtils.mergeRow(row,t.getDeclaredConstructor().newInstance());
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            appList.add(appData);
+        }
+        return appList;
     }
 }
